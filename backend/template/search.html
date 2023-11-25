@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <link rel="stylesheet" crossorigin="anonymous"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" >
+    
+	<script crossorigin="anonymous"
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" >
+	</script>
+</head>
+<body>
+<form action="/search" method="POST">
+    <div class="mb-5 d-flex position-relative">
+        <!-- Search -->
+        <div class="input-group w-50 mx-auto">
+            <input class="form-control py-2"
+                   placeholder="Search for direct flights" name="search_brand_model" value=""/>
+            <button type="submit" class="btn btn-secondary text-muted">Search
+            </button>
+        </div>
+    </div>
+</form>
+{% if flight_lists %}
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">DEPDATE</th>
+            <th scope="col">ARRDATE</th>
+            <th scope="col">DEPAIRPORT</th>
+            <th scope="col">ARRAIRPORT</th>
+            <th scope="col">AIRLINE</th>
+            <th scope="col">FLIGHTNUMBER</th>
+            <th scope="col">PRICE</th>
+            <th scope="col">LINK</th>
+            <th scope="col">CREATEDDATE</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fl in flight_lists %}
+                <tr>
+                    <td>{{ fl['DRP_DATETIME']}}</td>
+                    <td>{{ fl['ARR_DATETIME']}}</td>
+                    <td>{{ fl['DEP_AIRPORT']}}</td>
+                    <td>{{ fl['ARR_AIRPORT']}}</td>
+                    <td>{{ fl['AIRLINE']}}</td>
+                    <td>{{ fl['FLIGHTNUMBER']}}</td>
+                    <td>{{ fl['PRICE']}}</td>
+                    <td><a href="{{ fl['LINK'] }}" target="_blank" >GoToURL</a></td>
+                    <td>{{ fl['CREATEDDATE']}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+{% endif %}
+</body>
+</html>
