@@ -178,7 +178,7 @@ def NorthAmerica(start,end):
                                       '航空公司' ,'航班号','票价','官网购票链接'])  
     
     routes=[
-    ['JFK',	'PVG']	
+     ['JFK',	'PVG']	
     ,['LAX',	'PVG']
     ,['SFO',	'PVG']	
     ,['SEA',	'PVG']	
@@ -187,11 +187,14 @@ def NorthAmerica(start,end):
     ,['LAX',	'PEK']	
     ,['SFO',	'PEK']	
     ,['JFK',	'PEK']	
+    ,['BOS',	'PEK']
+    ,['IAD',	'PEK']	
     ,['LAX',	'CAN']
     ,['JFK',	'CAN']	
     ,['LAX',	'SZX']	
     ,['SFO',	'WUH']
     ,['LAX',	'XMN']    
+    ,['LAX',	'TFU']  
         ]
     date = start
     while date <= end:
