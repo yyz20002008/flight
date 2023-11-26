@@ -266,7 +266,8 @@ if __name__ == "__main__":
 
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=1) 
+    
     flight_list=NA1()
-    app.run()
+    app.run(debug=False, host='0.0.0.0')
   
 driver.quit() 
