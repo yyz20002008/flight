@@ -9,8 +9,8 @@ file_handler.setLevel(WARNING)
 CORS(app)
 
 import time
-import subprocess
-import selenium
+#import subprocess
+#import selenium
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -19,8 +19,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 #from playsound import playsound
 import datetime 
-import threading
-import pyodbc
+#import threading
+#import pyodbc
 import sqlite3
 
 DATABASE='database.db'
