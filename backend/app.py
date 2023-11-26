@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify,g
 from logging import FileHandler,WARNING
 from flask_cors import CORS
-from app import app
+
 
 app = Flask(__name__, template_folder='template')
 file_handler = FileHandler('errorlog.txt')
@@ -265,7 +265,7 @@ def search():
 if __name__ == "__main__":
 
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
-    end= start + datetime.timedelta(days=30) 
+    end= start + datetime.timedelta(days=1) 
     flight_list=NA1()
     app.run()
   
