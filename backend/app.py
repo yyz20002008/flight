@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify,g
 from logging import FileHandler,WARNING
 from flask_cors import CORS
+from app import app
 
 app = Flask(__name__, template_folder='template')
 file_handler = FileHandler('errorlog.txt')
@@ -195,6 +196,24 @@ def NorthAmerica(start,end):
     ,['SFO',	'WUH']
     ,['LAX',	'XMN']    
     ,['LAX',	'TFU']  
+    
+    ,['PVG',    'JFK']	
+    ,['PVG',    'LAX']
+    ,['PVG',    'SFO']	
+    ,['PVG',    'SEA']	
+    ,['PVG',    'DTW']	
+    ,['PVG',    'DFW']
+    ,['PEK',    'LAX']	
+    ,['PEK',    'SFO']	
+    ,['PEK',    'JFK']	
+    ,['PEK',    'BOS']
+    ,['PEK',    'IAD']	
+    ,['CAN',    'LAX']
+    ,['CAN',    'JFK']	
+    ,['SZX',    'LAX']	
+    ,['WUH',    'SFO']
+    ,['XMN',    'LAX']    
+    ,['TFU',    'LAX'] 
         ]
     date = start
     while date <= end:
