@@ -53,7 +53,7 @@ def init_db():
 init_db()
 
 
-#service = Service(executable_path='chromedriver.exe')
+service = Service(executable_path='/usr/bin/chromedriver.exe')
 
 
 option = webdriver.ChromeOptions()
@@ -63,8 +63,7 @@ option.add_argument('--ignore-certificate-errors')
 #options.binary_location = "/usr/bin/chromium"
 option.add_argument("--no-sandbox")
 option.add_argument('disable-notifications')
-#driver = webdriver.Chrome(service=service,options=option)
-driver = webdriver.Chrome(options=option)
+driver = webdriver.Chrome(service=service,options=option)
 
 def search_cur_flight(dep,arr,date):
     print(f'''Input: Date:{date},Departure: {dep} - Arrival: {arr}''')
