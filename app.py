@@ -53,17 +53,21 @@ def init_db():
 init_db()
 
 
-service = Service(executable_path='chromedriver.exe')
+#service = Service(executable_path='chromedriver.exe')
+from selenium.webdriver.chrome.options import Options
 
+option = Options()
 
-option = webdriver.ChromeOptions()
+#option = webdriver.ChromeOptions()
 option.add_argument("--headless=new")
-option.add_argument('--ignore-certificate-errors')
+#option.add_argument('--ignore-certificate-errors')
 #option.add_argument("--test-type")
 #options.binary_location = "/usr/bin/chromium"
-option.add_argument("--no-sandbox")
-option.add_argument('disable-notifications')
-driver = webdriver.Chrome(service=service,options=option)
+#option.add_argument("--no-sandbox")
+#option.add_argument('disable-notifications')
+#driver = webdriver.Chrome(service=service,options=option)
+
+driver = webdriver.Chrome(options=option)
 
 def search_cur_flight(dep,arr,date):
     print(f'''Input: Date:{date},Departure: {dep} - Arrival: {arr}''')
