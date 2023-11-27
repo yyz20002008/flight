@@ -53,7 +53,7 @@ def init_db():
 init_db()
 
 
-service = Service(executable_path='D:/SoftwareInstalled2/Anaconda3/Scripts/chromedriver.exe')
+service = Service(executable_path='chromedriver.exe')
 
 
 option = webdriver.ChromeOptions()
