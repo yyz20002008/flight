@@ -53,7 +53,7 @@ def init_db():
 init_db()
 
 
-service = Service(executable_path='/usr/bin/chromedriver.exe')
+service = Service(executable_path='chromedriver.exe')
 
 
 option = webdriver.ChromeOptions()
