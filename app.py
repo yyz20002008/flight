@@ -54,11 +54,13 @@ init_db()
 
 
 #service = Service(executable_path='chromedriver.exe')
+chromedriver_path='/usr/bin/chromedriver'
+
 from selenium.webdriver.chrome.options import Options
 
-option = Options()
+#option = Options()
 
-#option = webdriver.ChromeOptions()
+option = webdriver.ChromeOptions()
 option.add_argument("--headless=new")
 #option.add_argument('--ignore-certificate-errors')
 #option.add_argument("--test-type")
@@ -67,7 +69,8 @@ option.add_argument("--headless=new")
 #option.add_argument('disable-notifications')
 #driver = webdriver.Chrome(service=service,options=option)
 
-driver = webdriver.Chrome(options=option)
+#driver = webdriver.Chrome(options=option)
+driver = webdriver.Chrome(service=Service(chromedriver_path), options=option)
 
 def search_cur_flight(dep,arr,date):
     print(f'''Input: Date:{date},Departure: {dep} - Arrival: {arr}''')
