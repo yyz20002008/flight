@@ -50,10 +50,7 @@ def init_db():
 
 init_db()
 
-
-
-
-"""
+""" Method 1
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -66,24 +63,30 @@ option.add_argument("--no-sandbox")
 #option.add_argument('disable-notifications')
 driver = webdriver.Chrome(options=option)
 """
+""" Method 2
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+service = Service(executable_path='chromedriver.exe')
+from selenium.webdriver.chrome.options import Options
+option = Options()
+option.add_argument("--headless=new")
+option.add_argument("--no-sandbox") 
+driver = webdriver.Chrome(service=service,options=option)
+"""
 #use below for DigitalOcean
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 option = Options()
-
 service = Service(executable_path='/usr/bin/chromedriver')
-option.add_argument("--headless=new")
+option.add_argument("--headless")
 option.add_argument("--no-sandbox") 
 option.add_argument("--disable-dev-shm-usage")
-option.binary_location = "/usr/bin/chromium"
+option.binary_location = "/usr/bin/google-chrome"
 driver = webdriver.Chrome(service=service, options=option)
 
-
-#service = Service(executable_path='chromedriver.exe')
-#chromedriver_path='/usr/bin/chromedriver'
-#driver = webdriver.Chrome(service=service,options=option)
-#driver = webdriver.Chrome(service=Service(chromedriver_path), options=option)
 
 
 
