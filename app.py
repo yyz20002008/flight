@@ -63,7 +63,7 @@ option.add_argument("--no-sandbox")
 #option.add_argument('disable-notifications')
 driver = webdriver.Chrome(options=option)
 """
-""" Method 2
+""" #Method 2
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -210,6 +210,9 @@ def NorthAmerica(start,end):
     ,['SEA',	'PVG']	
     ,['DTW',	'PVG']	
     ,['DFW',	'PVG']
+    
+        ]
+    """
     ,['LAX',	'PEK']	
     ,['SFO',	'PEK']	
     ,['JFK',	'PEK']	
@@ -239,7 +242,7 @@ def NorthAmerica(start,end):
     ,['WUH',    'SFO']
     ,['XMN',    'LAX']    
     ,['TFU',    'LAX'] 
-        ]
+    """
     date = start
     while date <= end:
         for path in routes:
