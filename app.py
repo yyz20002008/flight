@@ -81,7 +81,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 option = Options()
 service = Service(executable_path='/usr/bin/chromedriver')
-option.add_argument("--headless")
+option.add_argument("--headless=new")
 option.add_argument("--no-sandbox") 
 option.add_argument("--disable-dev-shm-usage")
 option.binary_location = "/usr/bin/google-chrome"
