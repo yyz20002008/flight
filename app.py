@@ -11,9 +11,7 @@ CORS(app)
 import time
 #import subprocess
 #import selenium
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
+
 
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -53,24 +51,36 @@ def init_db():
 init_db()
 
 
-#service = Service(executable_path='chromedriver.exe')
-#chromedriver_path='/usr/bin/chromedriver'
 
-from selenium.webdriver.chrome.options import Options
 
-option = Options()
-
+"""
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 option = webdriver.ChromeOptions()
 option.add_argument("--headless=new")
+option.add_argument("--no-sandbox")
 #option.add_argument('--ignore-certificate-errors')
 #option.add_argument("--test-type")
 #options.binary_location = "/usr/bin/chromium"
-#option.add_argument("--no-sandbox")
 #option.add_argument('disable-notifications')
+driver = webdriver.Chrome(options=option)
+"""
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+option = Options()
+
+service = Service(executable_path='/usr/bin/chromedriver')
+driver = webdriver.Chrome(service=service, options=option)
+
+
+#service = Service(executable_path='chromedriver.exe')
+#chromedriver_path='/usr/bin/chromedriver'
 #driver = webdriver.Chrome(service=service,options=option)
 #driver = webdriver.Chrome(service=Service(chromedriver_path), options=option)
 
-driver = webdriver.Chrome(options=option)
+
 
 def search_cur_flight(dep,arr,date):
     print(f'''Input: Date:{date},Departure: {dep} - Arrival: {arr}''')
