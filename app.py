@@ -74,6 +74,7 @@ option.add_argument("--headless=new")
 option.add_argument("--no-sandbox") 
 driver = webdriver.Chrome(service=service,options=option)
 """
+"""
 #use below for DigitalOcean
 from selenium import webdriver
 #from selenium.webdriver.chrome.service import Service
@@ -212,7 +213,7 @@ def NorthAmerica(start,end):
     ,['DFW',	'PVG']
     
         ]
-    """
+
     ,['LAX',	'PEK']	
     ,['SFO',	'PEK']	
     ,['JFK',	'PEK']	
@@ -242,7 +243,7 @@ def NorthAmerica(start,end):
     ,['WUH',    'SFO']
     ,['XMN',    'LAX']    
     ,['TFU',    'LAX'] 
-    """
+   
     date = start
     while date <= end:
         for path in routes:
@@ -260,7 +261,7 @@ def NA1():
     #df_na.to_csv('flight_search_na.csv', encoding='utf_8_sig') 
     
     return df_na
-
+"""
 #--------------Web---------------------------
 @app.route('/api')
 def api():
@@ -298,4 +299,4 @@ if __name__ == "__main__":
     #flight_list=NA1()
     app.run(debug=False, host='0.0.0.0')
   
-driver.quit() 
+#driver.quit() 
