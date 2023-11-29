@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='template')
 file_handler = FileHandler('errorlog.txt')
 file_handler.setLevel(WARNING)
 CORS(app)
-
+import json
 import time
 #import subprocess
 #import selenium
@@ -266,13 +266,13 @@ def NA1():
 @app.route('/api')
 def api():
     response = {'message': 'Hello, World!'}
-    return jsonify(response)
+    return render_template("test.html", jsonfile=json.dumps(response))
 """
 @app.route("/flight")
 def index():
     return render_template("index.html",flight_lists=[flight_list.to_html(classes='data')], titles=flight_list.columns.values)
 """
-@app.route('/flight')
+@app.route('/')
 def index():
     conn = get_db()
     posts = conn.execute('SELECT * FROM FLIGHTINFO').fetchall()
