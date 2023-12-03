@@ -63,18 +63,18 @@ option.add_argument("--no-sandbox")
 #option.add_argument('disable-notifications')
 driver = webdriver.Chrome(options=option)
 """
-""" #Method 2
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-service = Service(executable_path='chromedriver.exe')
+service = Service(executable_path='/usr/bin/chromedriver/chromedriver')
 from selenium.webdriver.chrome.options import Options
 option = Options()
 option.add_argument("--headless=new")
 option.add_argument("--no-sandbox") 
 driver = webdriver.Chrome(service=service,options=option)
-"""
 
+""" #Method 2
 #use below for DigitalOcean
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -86,7 +86,7 @@ option.add_argument("--no-sandbox")
 option.add_argument("--disable-dev-shm-usage")
 #option.binary_location = "/usr/bin/google-chrome"
 driver = webdriver.Chrome(options=option)
-
+"""
 
 
 
