@@ -298,6 +298,6 @@ if __name__ == "__main__":
     
     flight_list=NA1()
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=port)
   
 #driver.quit() 
