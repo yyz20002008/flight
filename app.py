@@ -295,7 +295,7 @@ if __name__ == "__main__":
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=1) 
     
-    #flight_list=NA1()
+    flight_list=NA1()
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
   
