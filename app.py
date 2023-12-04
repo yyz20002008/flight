@@ -266,11 +266,11 @@ def NA1():
 def api():
     response = {'message': 'Hello, World!'}
     return render_template("test.html", jsonfile=json.dumps(response))
-"""
+
 @app.route("/flight")
 def index():
     return render_template("index.html",flight_lists=[flight_list.to_html(classes='data')], titles=flight_list.columns.values)
-"""
+
 @app.route('/')
 def index():
     conn = get_db()
@@ -299,4 +299,4 @@ if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
   
-#driver.quit() 
+driver.quit() 
