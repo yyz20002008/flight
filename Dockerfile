@@ -54,4 +54,5 @@ EXPOSE 5000
 # 定义环境变量
 ENV FLASK_APP=app.py
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+#CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD ["gunicorn"  , "-b", "0.0.0.0:5000", "app:app"]
