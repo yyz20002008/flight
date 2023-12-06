@@ -21,35 +21,32 @@ import datetime
 #import pyodbc
 import sqlite3
 
-DATABASE='database.db'
+from flask_sqlalchemy import SQLAlchemy  
+from sqlalchemy.sql import func
 
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-        db.row_factory = sqlite3.Row
-    return db
-@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_uFUktBnCUch08QtvNFr@app-2ca2e130-4001-4022-8d7a-024072e804f4-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
+#'postgresql://username:password@host:port/database_name' 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#SQLALCHEMY_TRACK_MODIFICATIONS: A configuration to enable or disable tracking modifications of objects. 
+# You set it to False to disable tracking and use less memory.
+db = SQLAlchemy(app)
 
-def query_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
-
-def init_db():
-    with app.app_context():
-        db = get_db()
-        with app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
-init_db()
-
+class FlightDB(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    DRP_DATETIME =  db.Column(db.Text)
+    ARR_DATETIME =  db.Column(db.Text)
+    DEP_AIRPORT =   db.Column(db.Text)
+    ARR_AIRPORT =   db.Column(db.Text)
+    AIRLINE =       db.Column(db.Text)
+    FLIGHTNUMBER =  db.Column(db.Text)
+    PRICE =         db.Column(db.Text)
+    LINK =          db.Column(db.Text)
+    CREATEDDATE =   db.Column(db.DateTime(timezone=True),
+                           server_default=func.now())
+    def __repr__(self):
+        return f'<Flight {self.AIRLINE+self.FLIGHTNUMBER}>'
+#The special __repr__ function allows you to give each object a string 
+# representation to recognize it for debugging purposes.
 """ Method 1
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -182,17 +179,18 @@ def search_cur_flight(dep,arr,date):
         df_record=pd.concat([df_record, df_current], ignore_index=True)    
         print('after df_record')    
         dt_string = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        with app.app_context():
-            conn = get_db()
-            cursor = conn.cursor() 
-            cursor.execute("INSERT INTO FLIGHTINFO\
-                            (DRP_DATETIME, ARR_DATETIME, DEP_AIRPORT,ARR_AIRPORT, AIRLINE,\
-                            FLIGHTNUMBER, PRICE, LINK,CREATEDDATE)\
-                            VALUES (?,?,?,?,?,?,?,?,?)", 
-                            (d_time, a_time, departure_airport,arrival_airport, carrier, flightNum,f_price,\
-                            base_url+"%20"+carrier,dt_string)) 
-            conn.commit()
-            cursor.close() 
+        insert_flight_info= FlightDB(
+            DRP_DATETIME = d_time,
+            ARR_DATETIME = a_time,
+            DEP_AIRPORT = departure_airport,
+            ARR_AIRPORT = arrival_airport,
+            AIRLINE = carrier,    
+            FLIGHTNUMBER = flightNum,
+            PRICE =  f_price,     
+            LINK = base_url+"%20"+carrier,        
+            CREATEDDATE = dt_string) 
+        db.session.add(insert_flight_info)
+        db.session.commit()
                 
     #df_record.to_csv('flight_search_result.csv', encoding='utf_8_sig')
     #df_record['官网购票链接'] = df_record['官网购票链接'].apply(make_clickable, args = ('点击前往',))
@@ -274,9 +272,7 @@ def index():
 """
 @app.route('/')
 def index():
-    conn = get_db()
-    posts = conn.execute('SELECT * FROM FLIGHTINFO').fetchall()
-    conn.close()
+    posts = FlightDB.query.all()
     return render_template('index.html', flight_lists=posts)
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -284,15 +280,14 @@ def search():
     if request.method == "POST":
         search_value = request.form.get('search_brand_model')
         print(search_value)
-        cur_flights = query_db(
-            "SELECT * FROM FLIGHTINFO WHERE ARR_AIRPORT LIKE ? OR DEP_AIRPORT LIKE ? ORDER BY PRICE",
-            ('%' + search_value + '%', '%' + search_value + '%'))
+        cur_flights = FlightDB.query.filter(FlightDB.ARR_AIRPORT.like(f'%{search_value}%') | FlightDB.DEP_AIRPORT.like(f'%{search_value}%')).all()
         return render_template('search.html', flight_lists=cur_flights)
     else:
         return render_template('search.html')
     
 if __name__ == "__main__":
-
+    with app.app_context():
+        db.create_all() # <--- create db object.
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=1) 
     
@@ -301,3 +296,47 @@ if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=port)
   
 #driver.quit() 
+
+
+""" #sqlite3 db definition
+DATABASE='database.db'
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+        db.row_factory = sqlite3.Row
+    return db
+@app.teardown_appcontext
+def close_connection(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
+
+def query_db(query, args=(), one=False):
+    cur = get_db().execute(query, args)
+    rv = cur.fetchall()
+    cur.close()
+    return (rv[0] if rv else None) if one else rv
+
+def init_db():
+    with app.app_context():
+        db = get_db()
+        with app.open_resource('schema.sql', mode='r') as f:
+            db.cursor().executescript(f.read())
+        db.commit()
+
+init_db()
+
+ with app.app_context():
+            conn = get_db()
+            cursor = conn.cursor() 
+            cursor.execute("INSERT INTO FLIGHTINFO\
+                            (DRP_DATETIME, ARR_DATETIME, DEP_AIRPORT,ARR_AIRPORT, AIRLINE,\
+                            FLIGHTNUMBER, PRICE, LINK,CREATEDDATE)\
+                            VALUES (?,?,?,?,?,?,?,?,?)", 
+                            (d_time, a_time, departure_airport,arrival_airport, carrier, flightNum,f_price,\
+                            base_url+"%20"+carrier,dt_string)) 
+            conn.commit()
+            cursor.close() 
+"""
