@@ -21,30 +21,14 @@ import datetime
 #import pyodbc
 import sqlite3
 
-from flask_sqlalchemy import SQLAlchemy  
-from sqlalchemy.sql import func
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_uFUktBnCUch08QtvNFr@app-2ca2e130-4001-4022-8d7a-024072e804f4-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
 #'postgresql://username:password@host:port/database_name' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #SQLALCHEMY_TRACK_MODIFICATIONS: A configuration to enable or disable tracking modifications of objects. 
 # You set it to False to disable tracking and use less memory.
-db = SQLAlchemy(app)
-
-class FlightDB(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    DRP_DATETIME =  db.Column(db.Text)
-    ARR_DATETIME =  db.Column(db.Text)
-    DEP_AIRPORT =   db.Column(db.Text)
-    ARR_AIRPORT =   db.Column(db.Text)
-    AIRLINE =       db.Column(db.Text)
-    FLIGHTNUMBER =  db.Column(db.Text)
-    PRICE =         db.Column(db.Text)
-    LINK =          db.Column(db.Text)
-    CREATEDDATE =   db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
-    def __repr__(self):
-        return f'<Flight {self.AIRLINE+self.FLIGHTNUMBER}>'
+from models import FlightDB,db
+db.init_app(app)
 #The special __repr__ function allows you to give each object a string 
 # representation to recognize it for debugging purposes.
 """ Method 1
@@ -189,8 +173,9 @@ def search_cur_flight(dep,arr,date):
             PRICE =  f_price,     
             LINK = base_url+"%20"+carrier,        
             CREATEDDATE = dt_string) 
-        db.session.add(insert_flight_info)
-        db.session.commit()
+        with app.app_context():
+            db.session.add(insert_flight_info)
+            db.session.commit()
                 
     #df_record.to_csv('flight_search_result.csv', encoding='utf_8_sig')
     #df_record['官网购票链接'] = df_record['官网购票链接'].apply(make_clickable, args = ('点击前往',))
@@ -203,14 +188,14 @@ def NorthAmerica(start,end):
     
     routes=[
      ['JFK',	'PVG']	
-         ]
-    """
+     
     ,['LAX',	'PVG']
     ,['SFO',	'PVG']	
     ,['SEA',	'PVG']	
     ,['DTW',	'PVG']	
     ,['DFW',	'PVG']
-    
+        ]
+    """
     
     ,['LAX',	'PEK']	
     ,['SFO',	'PEK']	
@@ -293,7 +278,7 @@ if __name__ == "__main__":
     
     flight_list=NA1()
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(debug=False, host='0.0.0.0', port=port)
   
 #driver.quit() 
 
