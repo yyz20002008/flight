@@ -38,7 +38,7 @@
                     <td>{{ fl['AIRLINE']}}</td>
                     <td>{{ fl['FLIGHTNUMBER']}}</td>
                     <td>{{ fl['PRICE']}}</td>
-                    <td>{{ fl['LINK']}}</td>
+                    <td><a href="{{ fl['LINK'] }}" target="_blank" >GoToURL</a></td>
                     <td>{{ fl['CREATEDDATE']}}</td>
                 </tr>
             {% endfor %}
