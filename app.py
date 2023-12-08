@@ -187,44 +187,8 @@ def NorthAmerica(start,end):
                                       '航空公司' ,'航班号','票价','官网购票链接'])  
     
     routes=[
-     ['JFK',	'PVG']	
-     
-    ,['LAX',	'PVG']
-    ,['SFO',	'PVG']	
-    ,['SEA',	'PVG']	
-    ,['DTW',	'PVG']	
-    ,['DFW',	'PVG']
-     
-    
-    ,['LAX',	'PEK']	
-    ,['SFO',	'PEK']	
-    ,['JFK',	'PEK']	
-    ,['BOS',	'PEK']
-    ,['IAD',	'PEK']	
-    ,['LAX',	'CAN']
-    ,['JFK',	'CAN']	
-    ,['LAX',	'SZX']	
-    ,['SFO',	'WUH']
-    ,['LAX',	'XMN']    
-    ,['LAX',	'TFU']  
-    
-    ,['PVG',    'JFK']	
-    ,['PVG',    'LAX']
-    ,['PVG',    'SFO']	
-    ,['PVG',    'SEA']	
-    ,['PVG',    'DTW']	
-    ,['PVG',    'DFW']
-    ,['PEK',    'LAX']	
-    ,['PEK',    'SFO']	
-    ,['PEK',    'JFK']	
-    ,['PEK',    'BOS']
-    ,['PEK',    'IAD']	
-    ,['CAN',    'LAX']
-    ,['CAN',    'JFK']	
-    ,['SZX',    'LAX']	
-    ,['WUH',    'SFO']
-    ,['XMN',    'LAX']    
-    ,['TFU',    'LAX'] 
+        ['BOS',	'PEK']    
+       ,['PEK', 'BOS']
        ]
 
     date = start
@@ -265,7 +229,7 @@ def search():
     if request.method == "POST":
         search_value = request.form.get('search_brand_model')
         print(search_value)
-        cur_flights = FlightDB.query.filter(FlightDB.ARR_AIRPORT.like(f'%{search_value}%') | FlightDB.DEP_AIRPORT.like(f'%{search_value}%')).all()
+        cur_flights = FlightDB.query.filter_by(FlightDB.ARR_AIRPORT.like(f'%{search_value}%') | FlightDB.DEP_AIRPORT.like(f'%{search_value}%')).all()
         return render_template('search.html', flight_lists=cur_flights)
     else:
         return render_template('search.html')
@@ -278,7 +242,7 @@ if __name__ == "__main__":
     
     flight_list=NA1()
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=port)
   
 #driver.quit() 
 
@@ -324,4 +288,44 @@ init_db()
                             base_url+"%20"+carrier,dt_string)) 
             conn.commit()
             cursor.close() 
+"""
+"""
+['JFK',	'PVG']	
+     
+    ,['LAX',	'PVG']
+    ,['SFO',	'PVG']	
+    ,['SEA',	'PVG']	
+    ,['DTW',	'PVG']	
+    ,['DFW',	'PVG']
+     
+    
+    ,['LAX',	'PEK']	
+    ,['SFO',	'PEK']	
+    ,['JFK',	'PEK']	
+    
+    ,['IAD',	'PEK']	
+    ,['LAX',	'CAN']
+    ,['JFK',	'CAN']	
+    ,['LAX',	'SZX']	
+    ,['SFO',	'WUH']
+    ,['LAX',	'XMN']    
+    ,['LAX',	'TFU']  
+    
+    ,['PVG',    'JFK']	
+    ,['PVG',    'LAX']
+    ,['PVG',    'SFO']	
+    ,['PVG',    'SEA']	
+    ,['PVG',    'DTW']	
+    ,['PVG',    'DFW']
+    ,['PEK',    'LAX']	
+    ,['PEK',    'SFO']	
+    ,['PEK',    'JFK']	
+    
+    ,['PEK',    'IAD']	
+    ,['CAN',    'LAX']
+    ,['CAN',    'JFK']	
+    ,['SZX',    'LAX']	
+    ,['WUH',    'SFO']
+    ,['XMN',    'LAX']    
+    ,['TFU',    'LAX'] 
 """
