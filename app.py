@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify,g
 from logging import FileHandler,WARNING
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler 
+import threading
 import os
 
 app = Flask(__name__, template_folder='template')
@@ -205,10 +206,11 @@ def NorthAmerica(start,end):
         date=date+datetime.timedelta(days=1)
     return df1
 def NA1():
-    df_na=NorthAmerica(start,end)
+    while True:
+        NorthAmerica(start,end)
+        #df_na=NorthAmerica(start,end)
     #df_na.to_csv('flight_search_na.csv', encoding='utf_8_sig') 
-    
-    return df_na
+    #return df_na
 
 #--------------Web---------------------------
 @app.route('/api')
@@ -240,11 +242,7 @@ if __name__ == "__main__":
         db.create_all() # <--- create db object.
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=10) 
-    
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(NA1, 'interval', seconds=30)
-    scheduler.start()
-
+    NA1()
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
   
