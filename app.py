@@ -242,9 +242,14 @@ if __name__ == "__main__":
         db.create_all() # <--- create db object.
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=10) 
-    NA1()
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+
+    while True:
+        time.sleep(300)
+        # run your stuff here
+        NorthAmerica(start,end)
+        port = int(os.environ.get('PORT', 5000))
+        app.run(debug=True, host='0.0.0.0', port=port)
+
   
 #driver.quit() 
 
