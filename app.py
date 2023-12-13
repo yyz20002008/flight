@@ -207,6 +207,7 @@ def NorthAmerica(start,end):
     return df1
 def NA1():
     while True:
+        time.sleep(30)
         NorthAmerica(start,end)
         #df_na=NorthAmerica(start,end)
     #df_na.to_csv('flight_search_na.csv', encoding='utf_8_sig') 
