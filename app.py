@@ -243,12 +243,11 @@ if __name__ == "__main__":
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=10) 
 
-    while True:
-        time.sleep(300)
-        # run your stuff here
-        NorthAmerica(start,end)
-        port = int(os.environ.get('PORT', 5000))
-        app.run(debug=True, host='0.0.0.0', port=port)
+    thread1 = threading.Thread(target=NA1,name='NAThread')
+#add other threads here as well
+    thread1.start()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
 
   
 #driver.quit() 
