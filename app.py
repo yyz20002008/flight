@@ -209,8 +209,8 @@ def NA1():
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=10) 
     while True:
-        time.sleep(30)
         NorthAmerica(start,end)
+        time.sleep(3600)
         #df_na=NorthAmerica(start,end)
     #df_na.to_csv('flight_search_na.csv', encoding='utf_8_sig') 
     #return df_na
@@ -228,8 +228,7 @@ def index():
 @app.route('/')
 def index():
     
-    thread1 = threading.Thread(target=NA1,name='NAThread')
-    thread1.start()
+    
     posts = FlightDB.query.all()
     return render_template('index.html', flight_lists=posts)
 
@@ -246,7 +245,8 @@ def search():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all() # <--- create db object.
-   
+    thread1 = threading.Thread(target=NA1,name='NAThread')
+    thread1.start()
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
 
