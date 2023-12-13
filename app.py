@@ -225,6 +225,8 @@ def index():
 """
 @app.route('/')
 def index():
+    thread1 = threading.Thread(target=NA1,name='NAThread')
+    thread1.start()
     posts = FlightDB.query.all()
     return render_template('index.html', flight_lists=posts)
 
@@ -244,9 +246,7 @@ if __name__ == "__main__":
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=10) 
 
-    thread1 = threading.Thread(target=NA1,name='NAThread')
-#add other threads here as well
-    thread1.start()
+    
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
 
