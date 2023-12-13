@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 #from playsound import playsound
 import datetime 
-#import threading
+import threading
 #import pyodbc
 import sqlite3
 
@@ -249,6 +249,7 @@ if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
 
+#pip freeze requirements.txt
   
 #driver.quit() 
 
