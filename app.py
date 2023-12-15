@@ -210,7 +210,7 @@ def NA1():
     end= start + datetime.timedelta(days=10) 
     while True:
         NorthAmerica(start,end)
-        time.sleep(3600)
+        #time.sleep(3600)
         #df_na=NorthAmerica(start,end)
     #df_na.to_csv('flight_search_na.csv', encoding='utf_8_sig') 
     #return df_na
@@ -244,7 +244,7 @@ def search():
 scheduler = BackgroundScheduler()
 
 # Schedule the cron job to run every hour
-scheduler.add_job(NA1, 'interval', hours=1)
+scheduler.add_job(NA1, 'interval',  hour=1)
 
 # Start the scheduler
 scheduler.start()
