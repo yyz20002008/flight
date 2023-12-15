@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify,g
 from logging import FileHandler,WARNING
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler 
+from apscheduler.schedulers.blocking import BlockingScheduler
 import threading
 import os
 
@@ -208,10 +209,9 @@ def NorthAmerica(start,end):
 def NA1():
     start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
     end= start + datetime.timedelta(days=10) 
-    while True:
-        NorthAmerica(start,end)
-        #time.sleep(3600)
-        #df_na=NorthAmerica(start,end)
+    NorthAmerica(start,end)
+    #time.sleep(3600)
+    #df_na=NorthAmerica(start,end)
     #df_na.to_csv('flight_search_na.csv', encoding='utf_8_sig') 
     #return df_na
 
@@ -240,18 +240,20 @@ def search():
         return render_template('search.html', flight_lists=cur_flights)
     else:
         return render_template('search.html')
-def job():
-    scheduler = BackgroundScheduler()
-    # Schedule the cron job to run every hour
+
+#scheduler = BackgroundScheduler(damon=True)
+scheduler = BlockingScheduler()
+@app.before_request
+def schedule_job():
     scheduler.add_job(NA1, 'interval',  hours=1)
-    # Start the scheduler
-    scheduler.start()
+
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all() # <--- create db object.
-    thread1 = threading.Thread(target=job,name='NAThread')
+    #thread1 = threading.Thread(target=NA1,name='NAThread')
     #thread1.start()
+    scheduler.start()
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
 
