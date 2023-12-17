@@ -18,7 +18,6 @@ import time
 
 from bs4 import BeautifulSoup
 import pandas as pd
-#from playsound import playsound
 import datetime 
 import threading
 #import pyodbc
@@ -227,7 +226,6 @@ def index():
 """
 @app.route('/')
 def index():
-    
     posts = FlightDB.query.all()
     return render_template('index.html', flight_lists=posts)
 
@@ -241,7 +239,6 @@ def search():
     else:
         return render_template('search.html')
 
-#scheduler = BackgroundScheduler(damon=True)
 scheduler = BlockingScheduler()
 @app.before_request
 def schedule_job():
@@ -251,9 +248,9 @@ def schedule_job():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all() # <--- create db object.
-    #thread1 = threading.Thread(target=NA1,name='NAThread')
-    #thread1.start()
-    scheduler.start()
+    thread1 = threading.Thread(target=NA1,name='NAThread')
+    thread1.start()
+    #scheduler.start()
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
 

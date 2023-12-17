@@ -5,11 +5,10 @@ FROM python:3.9-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 # set working directory 
-WORKDIR /app
+# WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    
     unzip \
     wget \
     gnupg2 \
@@ -29,8 +28,9 @@ RUN apt-get update && apt-get install -y google-chrome-stable
 #sudo apt-get -f install -y
 
 RUN google-chrome --version
-RUN wget -q --continue -P /chromedriver "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chromedriver-linux64.zip" \
+RUN wget -q --continue -P /chromedriver " " \
      && unzip /chromedriver/chromedriver* -d /usr/local/bin/
+
 
 # Move and adjust permissions for chromedrive 
 # RUN wget https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/119.0.6045.105/linux64/chromedriver-linux64.zip
