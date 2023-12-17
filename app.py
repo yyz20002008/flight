@@ -239,17 +239,17 @@ def search():
     else:
         return render_template('search.html')
 
-scheduler = BlockingScheduler()
-@app.before_request
-def schedule_job():
-    scheduler.add_job(NA1, 'interval',  hours=1)
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=NA1, trigger="interval", seconds=60)
+scheduler.start()
+
 
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all() # <--- create db object.
-    thread1 = threading.Thread(target=NA1,name='NAThread')
-    thread1.start()
+    #thread1 = threading.Thread(target=NA1,name='NAThread')
+    #thread1.start()
     #scheduler.start()
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)
