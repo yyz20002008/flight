@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y google-chrome-stable
 #sudo apt-get -f install -y
 
 RUN google-chrome --version
-RUN wget -q --continue -P /chromedriver " " \
+RUN wget -q --continue -P /chromedriver "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/120.0.6099.71/linux64/chromedriver-linux64.zip" \
      && unzip /chromedriver/chromedriver* -d /usr/local/bin/
 
 
