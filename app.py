@@ -191,6 +191,44 @@ def NorthAmerica(start,end):
     routes=[
         ['BOS',	'PEK']    
        ,['PEK', 'BOS']
+       ,['JFK',	'PVG']	
+     
+    ,['LAX',	'PVG']
+    ,['SFO',	'PVG']	
+    ,['SEA',	'PVG']	
+    ,['DTW',	'PVG']	
+    ,['DFW',	'PVG']
+     
+    
+    ,['LAX',	'PEK']	
+    ,['SFO',	'PEK']	
+    ,['JFK',	'PEK']	
+    
+    ,['IAD',	'PEK']	
+    ,['LAX',	'CAN']
+    ,['JFK',	'CAN']	
+    ,['LAX',	'SZX']	
+    ,['SFO',	'WUH']
+    ,['LAX',	'XMN']    
+    ,['LAX',	'TFU']  
+    
+    ,['PVG',    'JFK']	
+    ,['PVG',    'LAX']
+    ,['PVG',    'SFO']	
+    ,['PVG',    'SEA']	
+    ,['PVG',    'DTW']	
+    ,['PVG',    'DFW']
+    ,['PEK',    'LAX']	
+    ,['PEK',    'SFO']	
+    ,['PEK',    'JFK']	
+    
+    ,['PEK',    'IAD']	
+    ,['CAN',    'LAX']
+    ,['CAN',    'JFK']	
+    ,['SZX',    'LAX']	
+    ,['WUH',    'SFO']
+    ,['XMN',    'LAX']    
+    ,['TFU',    'LAX'] 
        ]
 
     date = start
@@ -240,7 +278,7 @@ def search():
         return render_template('search.html')
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=NA1, trigger="interval", seconds=60)
+scheduler.add_job(func=NA1, trigger="interval", hours=1)
 scheduler.start()
 
 
@@ -300,44 +338,4 @@ init_db()
                             base_url+"%20"+carrier,dt_string)) 
             conn.commit()
             cursor.close() 
-"""
-"""
-['JFK',	'PVG']	
-     
-    ,['LAX',	'PVG']
-    ,['SFO',	'PVG']	
-    ,['SEA',	'PVG']	
-    ,['DTW',	'PVG']	
-    ,['DFW',	'PVG']
-     
-    
-    ,['LAX',	'PEK']	
-    ,['SFO',	'PEK']	
-    ,['JFK',	'PEK']	
-    
-    ,['IAD',	'PEK']	
-    ,['LAX',	'CAN']
-    ,['JFK',	'CAN']	
-    ,['LAX',	'SZX']	
-    ,['SFO',	'WUH']
-    ,['LAX',	'XMN']    
-    ,['LAX',	'TFU']  
-    
-    ,['PVG',    'JFK']	
-    ,['PVG',    'LAX']
-    ,['PVG',    'SFO']	
-    ,['PVG',    'SEA']	
-    ,['PVG',    'DTW']	
-    ,['PVG',    'DFW']
-    ,['PEK',    'LAX']	
-    ,['PEK',    'SFO']	
-    ,['PEK',    'JFK']	
-    
-    ,['PEK',    'IAD']	
-    ,['CAN',    'LAX']
-    ,['CAN',    'JFK']	
-    ,['SZX',    'LAX']	
-    ,['WUH',    'SFO']
-    ,['XMN',    'LAX']    
-    ,['TFU',    'LAX'] 
 """
