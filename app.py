@@ -264,7 +264,7 @@ def index():
 """
 @app.route('/')
 def index():
-    posts = FlightDB.query.all()
+    posts = FlightDB.query.all().order_by(db.CREATEDDATE.desc())
     return render_template('index.html', flight_lists=posts)
 
 @app.route('/search', methods=['GET', 'POST'])
