@@ -23,6 +23,27 @@ import threading
 #import pyodbc
 import sqlite3
 
+def get_env_variable(name):
+    try:
+        return os.environ[name]
+    except KeyError:
+        message = "Expected environment variable '{}' not set.".format(name)
+        raise Exception(message)
+
+# the values of those depend on your setup
+POSTGRES_URL = get_env_variable("POSTGRES_URL")
+POSTGRES_USER = get_env_variable("POSTGRES_USER")
+POSTGRES_PW = get_env_variable("POSTGRES_PW")
+POSTGRES_DB = get_env_variable("POSTGRES_DB")
+"""
+in linux
+
+"""
+#DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user=POSTGRES_USER,pw=POSTGRES_PW,url=POSTGRES_URL,db=POSTGRES_DB)
+
+#app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_uFUktBnCUch08QtvNFr@app-2ca2e130-4001-4022-8d7a-024072e804f4-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
 #'postgresql://username:password@host:port/database_name' 
@@ -211,24 +232,6 @@ def NorthAmerica(start,end):
     ,['SFO',	'WUH']
     ,['LAX',	'XMN']    
     ,['LAX',	'TFU']  
-    
-    ,['PVG',    'JFK']	
-    ,['PVG',    'LAX']
-    ,['PVG',    'SFO']	
-    ,['PVG',    'SEA']	
-    ,['PVG',    'DTW']	
-    ,['PVG',    'DFW']
-    ,['PEK',    'LAX']	
-    ,['PEK',    'SFO']	
-    ,['PEK',    'JFK']	
-    
-    ,['PEK',    'IAD']	
-    ,['CAN',    'LAX']
-    ,['CAN',    'JFK']	
-    ,['SZX',    'LAX']	
-    ,['WUH',    'SFO']
-    ,['XMN',    'LAX']    
-    ,['TFU',    'LAX'] 
        ]
 
     date = start
@@ -338,4 +341,23 @@ init_db()
                             base_url+"%20"+carrier,dt_string)) 
             conn.commit()
             cursor.close() 
+"""
+"""
+    ,['PVG',    'JFK']	
+    ,['PVG',    'LAX']
+    ,['PVG',    'SFO']	
+    ,['PVG',    'SEA']	
+    ,['PVG',    'DTW']	
+    ,['PVG',    'DFW']
+    ,['PEK',    'LAX']	
+    ,['PEK',    'SFO']	
+    ,['PEK',    'JFK']	
+    
+    ,['PEK',    'IAD']	
+    ,['CAN',    'LAX']
+    ,['CAN',    'JFK']	
+    ,['SZX',    'LAX']	
+    ,['WUH',    'SFO']
+    ,['XMN',    'LAX']    
+    ,['TFU',    'LAX'] 
 """
