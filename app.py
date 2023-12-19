@@ -22,7 +22,8 @@ import datetime
 import threading
 #import pyodbc
 import sqlite3
-
+"""
+in linux
 def get_env_variable(name):
     try:
         return os.environ[name]
@@ -35,15 +36,13 @@ POSTGRES_URL = get_env_variable("POSTGRES_URL")
 POSTGRES_USER = get_env_variable("POSTGRES_USER")
 POSTGRES_PW = get_env_variable("POSTGRES_PW")
 POSTGRES_DB = get_env_variable("POSTGRES_DB")
-"""
-in linux
+
+DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user=POSTGRES_USER,pw=POSTGRES_PW,url=POSTGRES_URL,db=POSTGRES_DB)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 
 """
-#DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user=POSTGRES_USER,pw=POSTGRES_PW,url=POSTGRES_URL,db=POSTGRES_DB)
-
-#app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
-#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
-
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_uFUktBnCUch08QtvNFr@app-2ca2e130-4001-4022-8d7a-024072e804f4-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
 #'postgresql://username:password@host:port/database_name' 
@@ -247,8 +246,9 @@ def NorthAmerica(start,end):
         date=date+datetime.timedelta(days=1)
     return df1
 def NA1():
-    start = datetime.date.today()+ datetime.timedelta(days=1)  #set start and end time
+    start = datetime.date.today()+ datetime.timedelta(days=150)  #set start and end time
     end= start + datetime.timedelta(days=10) 
+    print(start)
     NorthAmerica(start,end)
     #time.sleep(3600)
     #df_na=NorthAmerica(start,end)
