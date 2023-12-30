@@ -22,7 +22,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
 # Install Google Chrome
 RUN DEBIAN_FRONTEND=noninteractive
 RUN apt-get -f install
-RUN apt-get update && apt-get install -y google-chrome-stable
+RUN apt-get update && apt-get install -y --no-install-recommends google-chrome-stable
 
 #OR
 #wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb

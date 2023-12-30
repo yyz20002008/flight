@@ -5,6 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.blocking import BlockingScheduler
 import threading
 import os
+from os import environ
 
 app = Flask(__name__, template_folder='template')
 file_handler = FileHandler('errorlog.txt')
@@ -23,14 +24,21 @@ import threading
 #import pyodbc
 import sqlite3
 
+#DigitalOcean
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_uFUktBnCUch08QtvNFr@app-2ca2e130-4001-4022-8d7a-024072e804f4-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_uFUktBnCUch08QtvNFr@app-2ca2e130-4001-4022-8d7a-024072e804f4-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
+#testing docker yml 12/24/2023
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres123456@flask_db:5432/postgres'
+#'postgresql://postgres:postgres123456@localhost:5432/postgres'#environ.get('DB_URL')
 #'postgresql://username:password@host:port/database_name' 
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #SQLALCHEMY_TRACK_MODIFICATIONS: A configuration to enable or disable tracking modifications of objects. 
 # You set it to False to disable tracking and use less memory.
 from models import FlightDB,db
 db.init_app(app)
+
 #The special __repr__ function allows you to give each object a string 
 # representation to recognize it for debugging purposes.
 """ Method 1
@@ -190,7 +198,7 @@ def NorthAmerica(start,end):
     
     routes=[
         ['BOS',	'PEK']    
-       ,['PEK', 'BOS']
+       
        ,['JFK',	'PVG']	
      
     ,['LAX',	'PVG']
@@ -226,7 +234,7 @@ def NorthAmerica(start,end):
         date=date+datetime.timedelta(days=1)
     return df1
 def NA1():
-    start = datetime.date.today()+ datetime.timedelta(days=150)  #set start and end time
+    start = datetime.date.today()+ datetime.timedelta(days=30)  #set start and end time
     end= start + datetime.timedelta(days=10) 
     print(start)
     NorthAmerica(start,end)
@@ -322,7 +330,7 @@ init_db()
             conn.commit()
             cursor.close() 
 """
-"""
+"""  ,['PEK', 'BOS']
     ,['PVG',    'JFK']	
     ,['PVG',    'LAX']
     ,['PVG',    'SFO']	

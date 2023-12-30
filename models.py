@@ -1,7 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy  
 from sqlalchemy.sql import func
 db = SQLAlchemy()
-
 class FlightDB(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     DRP_DATETIME =  db.Column(db.Text)
