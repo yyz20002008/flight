@@ -146,6 +146,8 @@ def search_cur_flight(dep,arr,date):
             Reg_price = None
         if cheapP is None:
             f_price= Reg_price
+        elif Reg_price is None:
+            continue
         else:
             f_price= cheapP
         departure_airport = cur_flight.find('div', class_ = 'ZHa2lc tdMWuf y52p7d').text
@@ -234,8 +236,8 @@ def NorthAmerica(start,end):
         date=date+datetime.timedelta(days=1)
     return df1
 def NA1():
-    start = datetime.date.today()+ datetime.timedelta(days=30)  #set start and end time
-    end= start + datetime.timedelta(days=20) 
+    start = datetime.date.today()+ datetime.timedelta(days=140)  #set start and end time
+    end= start + datetime.timedelta(days=30) 
     print(start)
     NorthAmerica(start,end)
     #time.sleep(3600)
@@ -255,7 +257,7 @@ def index():
 """
 @app.route('/')
 def index():
-    posts = FlightDB.query.order_by(FlightDB.CREATEDDATE.desc()).all()
+    posts = FlightDB.query.order_by(FlightDB.PRICE.asc()).all()
     return render_template('index.html', flight_lists=posts)
 
 @app.route('/search', methods=['GET', 'POST'])
