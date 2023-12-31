@@ -37,7 +37,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # You set it to False to disable tracking and use less memory.
 from models import FlightDB,db
 db.init_app(app)
-
+with app.app_context():
+    db.create_all()
 #The special __repr__ function allows you to give each object a string 
 # representation to recognize it for debugging purposes.
 """ Method 1
