@@ -25,10 +25,10 @@ import threading
 import sqlite3
 
 #DigitalOcean
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_h0YqdkqlS1IJ2Fu9rDw@app-65b4a8d0-bd34-4e7c-8d55-b3e053b7f077-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://flightinfo:AVNS_h0YqdkqlS1IJ2Fu9rDw@app-65b4a8d0-bd34-4e7c-8d55-b3e053b7f077-do-user-15044933-0.c.db.ondigitalocean.com:25060/flightinfo?sslmode=require'
 
 #testing docker yml 12/24/2023
-#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres123456@flask_db:5432/postgres'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres123456@flask_db:5432/postgres'
 #'postgresql://postgres:postgres123456@localhost:5432/postgres'#environ.get('DB_URL')
 #'postgresql://username:password@host:port/database_name' 
 
