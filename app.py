@@ -72,7 +72,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 option = Options()
-option.add_argument("--headless=new")
+#option.add_argument("--headless=new")
 option.add_argument("--no-sandbox") 
 option.add_argument("--disable-dev-shm-usage")
 #option.binary_location = "/usr/bin/google-chrome"
@@ -194,6 +194,79 @@ def search_cur_flight(dep,arr,date):
 
     return df_record
 
+def search_AirChina(dep,arr,date):
+    print(f'''Input: Date:{date},Departure: {dep} - Arrival: {arr}''')
+    base_url = f'https://www.kayak.com/flights/{dep}-{arr}/{date}?sort=price_a&fs=airlines=CA;stops=0 '    
+    #https://www.kayak.com/flights/LAX,SFO-PEK/2024-03-06?sort=bestflight_a&stops=0&fs=airlines=CA;
+    print("before webdriver.ChromeOptions()")
+   
+    my_url = base_url#.replace('2023-11-18', my_date) #前面的日期是你base_url里面的日期
+    driver.get(my_url)
+    print(my_url)
+    time.sleep(2) # set the time to wait till web fully loaded
+    
+  
+    # wait for the close button to be visible and click it
+    try:
+        close_button = driver.find_element(By.XPATH, '//div[@class="bBPb-close"]')
+        close_button.click()
+    except:
+        print("close is not found.")
+    time.sleep(3) 
+    # Find all elements with class "nrc6"
+    #elements = driver.find_elements(By.CLASS_NAME, "nrc6")
+    # Print the number of elements found
+    #print(len(elements))
+
+    # Loop through the found elements and print their attributes if needed
+    for element in driver.find_elements(By.XPATH,"//div[@class='nrc6-content-section']"):
+        element.click()
+        print('expand clickable section')
+        time.sleep(3) 
+
+    #temp_element = driver.find_elements(By.XPATH,"//div[@class='nrc6']")
+    
+    elem = driver.find_element("xpath","//*")
+    source_code = elem.get_attribute("outerHTML")   
+    new_bs = BeautifulSoup(source_code, 'lxml')
+    flights = new_bs.find_all('div', class_ = 'nrc6')
+    #print(flights)
+    df_record = pd.DataFrame(columns=['出发时间','到达时间','始发机场','到达机场',
+                                     '航空公司' ,'航班号','票价','购票链接'])  
+    for cur_flight in flights:
+         #print(cur_flight)
+        f_times = cur_flight.find_all('span', class_ = 'g16k-time')
+        d_time = f_times[0].text
+        a_time = f_times[1].text
+        f_info = cur_flight.find('div', class_ = 'nAz5-carrier-text').text.split(' ')
+        carrier = ' '.join(f_info[:len(f_info)-1])
+        flightNum = f_info[len(f_info)-1]
+        try:
+            cheapP = cur_flight.find('div', class_ = 'f8F1-price-text').text
+        except AttributeError:
+             cheapP = None
+        #print(f_info)
+        d_date_list = cur_flight.find('span', class_ = 'X3K_-header-text').text.split(' ')
+        d_date = ' '.join(d_date_list[2:])
+        arr_date_list = cur_flight.find('span', class_ = 'g16k-date-warning-badge').text.split(' ')
+        arr_date = ' '.join(arr_date_list[1:])
+        
+        print(d_date)
+        print(f'''
+             Departure_time: {d_time} {d_date}
+             Arrival_time: {a_time} {arr_date}
+             Carrier: {carrier}
+             FlightNum: {flightNum}
+             Flightprice: {cheapP}
+         ''') 
+        df_current =pd.DataFrame({'出发时间':[d_time+','+d_date],'到达时间':[a_time+','+arr_date]
+                                  , '始发机场':[dep],'到达机场':[arr]
+                                     ,'航空公司':[carrier], '航班号':[flightNum], '票价':[cheapP]
+                                     , '购票链接':[base_url]})
+        
+        df_record=pd.concat([df_record, df_current], ignore_index=True) 
+    return df_record
+
 def NorthAmerica(start,end):
     df1 = pd.DataFrame(columns=['出发时间','到达时间','始发机场','到达机场',
                                       '航空公司' ,'航班号','票价','官网购票链接'])  
@@ -229,7 +302,9 @@ def NorthAmerica(start,end):
             d=path[0]
             a=path[1]
             print(date)
-            df_search=search_cur_flight(d,a,date)
+            df_search = search_cur_flight(d,a,date)
+            df1=pd.concat([df1,df_search], ignore_index=True)
+            df_search = search_AirChina(d,a,date)
             df1=pd.concat([df1,df_search], ignore_index=True)
             print(f'''northamerica finish 1 path {d} to {a}''')
             #df1=df1.append(search(d,a,date))
@@ -270,9 +345,9 @@ def search():
     else:
         return render_template('search.html')
 
-scheduler = BackgroundScheduler()
-scheduler.add_job(func=NA1, trigger="interval", hours=1)
-scheduler.start()
+#scheduler = BackgroundScheduler()
+#scheduler.add_job(func=NA1, trigger="interval", hours=1)
+#scheduler.start()
 
 
 
